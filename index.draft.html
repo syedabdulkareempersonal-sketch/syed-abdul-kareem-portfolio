@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Syed Abdul Kareem | AI Builder</title>
+<meta name="description" content="Syed Abdul Kareem builds apps, websites, videos and marketing with AI. Projects: WaqtOS, HOOR-E-AIN, CricApex and Kadapa Cars.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Design plan — light studio portfolio in the Agenciex / Ridoy Rock idiom.
+   Ground: warm cream with a dot grid. Accent: emerald solid fills (brand), gold + navy support.
+   Type: Plus Jakarta Sans 800 oversized display, Instrument Serif italic for flourishes, Manrope body.
+   Signatures: drag-to-spin 3D card ring, arch-framed portrait with a rotating circular badge,
+   pill section badges, oversized ghost marquee, tilted cards, big accent stat blocks.
+   Motion: custom ease-out, word stagger, scroll-linked text fill. Single light theme by choice. */
+:root {
+  --cream: #F4F0E8;
+  --cream-2: #EDE7DC;
+  --paper: #FFFFFF;
+  --ink: #101A2E;
+  --ink-soft: #55617A;
+  --ghost: rgba(16, 26, 46, 0.085);
+  --line: rgba(16, 26, 46, 0.14);
+  --accent: #0FA47A;
+  --accent-bright: #12C692;
+  --accent-wash: #D8F0E5;
+  --gold: #C9A227;
+  --display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --serif: "Instrument Serif", Georgia, serif;
+  --body: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --dot: radial-gradient(circle, rgba(16, 26, 46, 0.11) 1.1px, transparent 1.1px);
+  color-scheme: light;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  background-color: var(--cream);
+  background-image: var(--dot);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1.0; letter-spacing: -0.04em; text-wrap: balance; }
+h1 em, h2 em, h3 em { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.015em; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 10px; }
+.wrap { width: min(1200px, 100% - 36px); margin-inline: auto; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px; border-radius: 999px;
+  background: var(--accent-wash); color: #0A6B50;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+/* ---------- Nav ---------- */
+.nav { position: sticky; top: 0; z-index: 60; padding: 14px 0; background: rgba(244, 240, 232, 0.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.logo { font-family: var(--display); font-weight: 800; font-size: 20px; letter-spacing: -0.045em; text-decoration: none; white-space: nowrap; }
+.logo b { color: var(--accent); font-weight: 800; }
+.pillnav { display: flex; gap: 2px; list-style: none; background: var(--paper); border-radius: 999px; padding: 5px; box-shadow: 0 2px 10px rgba(16, 26, 46, 0.07); }
+.pillnav a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 20px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 15px; color: var(--ink); transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .pillnav a:hover { background: var(--accent); color: #fff; } }
+@media (max-width: 880px) { .pillnav { display: none; } }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  min-height: 50px; padding: 0 24px; border-radius: 999px;
+  font-family: var(--body); font-weight: 700; font-size: 15.5px; text-decoration: none;
+  border: 1.5px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer;
+  transition: transform 160ms var(--ease-out), background-color 200ms var(--ease-out), color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+.btn:active { transform: scale(0.97); }
+.btn svg { width: 17px; height: 17px; flex: none; }
+.btn.solid { background: var(--accent); border-color: var(--accent); color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { background: var(--ink); color: var(--cream); }
+  .btn.solid:hover { background: var(--ink); border-color: var(--ink); }
+}
+.nav .btn { min-height: 46px; padding: 0 20px; }
+
+/* ---------- Hero ---------- */
+.hero { padding: 48px 0 20px; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 44px; align-items: center; }
+.hero h1 { font-size: clamp(3rem, 8vw, 6rem); margin: 22px 0 20px; }
+.hero h1 .hl { color: var(--accent); }
+.hero .lead { font-size: clamp(1.02rem, 1.7vw, 1.16rem); color: var(--ink-soft); max-width: 46ch; }
+.hero .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.word { display: inline-block; }
+
+/* Arch portrait + rotating badge */
+.arch { position: relative; justify-self: end; width: min(100%, 400px); }
+.arch .shape {
+  position: relative; overflow: hidden; background: var(--accent);
+  border-radius: 50% 50% 18px 18px / 34% 34% 18px 18px;
+  box-shadow: 0 26px 50px rgba(16, 26, 46, 0.18);
+}
+.arch .shape img { width: 100%; height: auto; }
+.spin { position: absolute; left: -34px; bottom: 12px; width: 124px; height: 124px; z-index: 3; }
+.spin .disc { width: 100%; height: 100%; background: var(--ink); border-radius: 50%; display: grid; place-items: center; box-shadow: 0 10px 24px rgba(16, 26, 46, 0.26); }
+.spin svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: turn 18s linear infinite; }
+.spin text { fill: var(--cream); font-family: var(--body); font-size: 10.2px; font-weight: 800; letter-spacing: 0.26em; text-transform: uppercase; }
+.spin .core { position: relative; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-bright); }
+@keyframes turn { to { transform: rotate(360deg); } }
+.tagpill { position: absolute; right: -10px; top: 22px; z-index: 3; background: var(--paper); border-radius: 999px; padding: 9px 16px; font-size: 13px; font-weight: 800; box-shadow: 0 8px 20px rgba(16, 26, 46, 0.12); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.tagpill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+@media (max-width: 920px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 34px; }
+  .arch { justify-self: start; width: min(100%, 330px); }
+  .spin { left: -18px; width: 104px; height: 104px; }
+}
+
+/* ---------- Drag-to-spin ring ---------- */
+.ringwrap { padding: 26px 0 10px; overflow: hidden; }
+.stage { position: relative; height: 380px; perspective: 1500px; touch-action: pan-y; cursor: grab; }
+.stage.dragging { cursor: grabbing; }
+.ring { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; }
+.slab {
+  position: absolute; width: 230px; height: 300px; margin-left: -115px; margin-top: -150px;
+  border-radius: 20px; overflow: hidden; background: var(--paper);
+  border: 1px solid var(--line); box-shadow: 0 14px 34px rgba(16, 26, 46, 0.14);
+  display: flex; flex-direction: column; user-select: none; -webkit-user-select: none;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.slab .pic { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; background: #fff; }
+.slab .pic.dark { background: #000; }
+.slab .pic img { max-height: 150px; width: auto; object-fit: contain; pointer-events: none; }
+.slab .cap { padding: 13px 16px; font-family: var(--display); font-weight: 800; font-size: 15.5px; letter-spacing: -0.02em; border-top: 1px solid var(--line); }
+.slab.word-slab { background: var(--accent); border-color: var(--accent); align-items: center; justify-content: center; padding: 22px; }
+.slab.word-slab span { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 2.4vw, 2rem); color: #fff; letter-spacing: -0.04em; line-height: 1.02; text-align: center; }
+.slab.ink-slab { background: var(--ink); border-color: var(--ink); align-items: center; justify-content: center; padding: 22px; }
+.slab.ink-slab span { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 2.4vw, 2rem); color: var(--cream); letter-spacing: -0.04em; line-height: 1.02; text-align: center; }
+.draghint { text-align: center; margin-top: 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.26em; text-transform: uppercase; color: var(--ink-soft); }
+.draghint::before, .draghint::after { content: "•"; color: var(--accent); margin: 0 10px; }
+@media (max-width: 760px) { .stage { height: 320px; } .slab { width: 182px; height: 244px; margin-left: -91px; margin-top: -122px; } .slab .pic img { max-height: 112px; } }
+
+/* ---------- Ghost marquee ---------- */
+.ghost { overflow: hidden; padding: 30px 0 10px; }
+.ghost .run { display: flex; width: max-content; animation: run 30s linear infinite; }
+.ghost .run span { font-family: var(--display); font-weight: 800; font-size: clamp(3.4rem, 11vw, 9rem); letter-spacing: -0.05em; color: var(--ghost); white-space: nowrap; padding-right: 48px; }
+@keyframes run { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .ghost .run, .spin svg { animation: none; } }
+
+/* ---------- Sections ---------- */
+section.block { padding: clamp(56px, 8vw, 100px) 0; }
+.head { max-width: 58ch; margin-bottom: clamp(30px, 5vw, 50px); }
+.head.mid { margin-inline: auto; text-align: center; }
+.head h2 { font-size: clamp(2.1rem, 5.4vw, 3.6rem); margin: 18px 0 14px; }
+.head p { color: var(--ink-soft); font-size: 1.04rem; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.stats > div { background: var(--accent); background-image: radial-gradient(circle, rgba(255, 255, 255, 0.22) 1.2px, transparent 1.2px); background-size: 18px 18px; border-radius: 20px; padding: 28px 24px; color: #fff; }
+.stats > div:nth-child(2) { background-color: var(--ink); }
+.stats > div:nth-child(4) { background-color: var(--gold); }
+.stats strong { display: block; font-family: var(--display); font-size: clamp(1.9rem, 3.8vw, 2.9rem); letter-spacing: -0.05em; font-variant-numeric: tabular-nums; line-height: 1; }
+.stats strong sup { font-size: 0.52em; vertical-align: super; }
+.stats span { display: block; margin-top: 10px; font-weight: 700; font-size: 14px; opacity: 0.92; }
+@media (max-width: 820px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* Work */
+.work { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+.card { grid-column: span 3; background: var(--paper); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out); }
+.card.wide { grid-column: span 6; flex-direction: row; }
+.card:nth-child(odd) { transform: rotate(-0.5deg); }
+.card:nth-child(even) { transform: rotate(0.5deg); }
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { transform: rotate(0deg) translateY(-6px); box-shadow: 0 24px 46px rgba(16, 26, 46, 0.16); }
+  .card:hover .plate img { transform: scale(1.05); }
+}
+.plate { display: flex; align-items: center; justify-content: center; padding: 28px; background: #fff; min-height: 210px; border-bottom: 1px solid var(--line); }
+.plate.dark { background: #000; }
+.plate img { max-height: 158px; width: auto; object-fit: contain; transition: transform 320ms var(--ease-out); }
+.card.wide .plate { flex: 0 0 40%; min-height: 250px; border-bottom: 0; border-right: 1px solid var(--line); }
+.card .body { padding: 26px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.card h3 { font-size: clamp(1.45rem, 2.6vw, 2rem); }
+.card p { color: var(--ink-soft); font-size: 15.5px; }
+.kind { align-self: flex-start; font-size: 11.5px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; list-style: none; margin-top: auto; padding-top: 6px; }
+.chips li { font-size: 12.5px; font-weight: 700; background: var(--cream-2); border-radius: 999px; padding: 5px 12px; }
+@media (max-width: 900px) {
+  .card, .card.wide { grid-column: span 6; flex-direction: column; }
+  .card.wide .plate { flex: none; min-height: 200px; border-right: 0; border-bottom: 1px solid var(--line); }
+}
+
+/* Process */
+.steps { display: grid; gap: 14px; }
+.step { display: grid; grid-template-columns: 96px 1fr 1.15fr; gap: 24px; align-items: start; padding: 28px 26px; background: var(--paper); border: 1px solid var(--line); border-radius: 20px; }
+.step .num { font-family: var(--display); font-size: 2.1rem; color: var(--accent); letter-spacing: -0.05em; line-height: 1; }
+.step h3 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); }
+.step p { color: var(--ink-soft); font-size: 15.5px; }
+@media (max-width: 820px) { .step { grid-template-columns: 60px 1fr; } .step p { grid-column: 1 / -1; } }
+
+/* Toolkit */
+.cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: 28px; }
+.panel h3 { font-size: 1.2rem; margin-bottom: 18px; }
+.panel ul { list-style: none; }
+.panel li { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding: 13px 0; border-top: 1px solid var(--line); }
+.panel li:first-child { border-top: 0; padding-top: 0; }
+.panel li span:first-child { font-weight: 800; }
+.panel li span:last-child { color: var(--ink-soft); font-size: 15px; }
+@media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+
+/* Contact */
+.contact { position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; gap: 34px; align-items: center; border-radius: 28px; padding: clamp(28px, 5vw, 54px); background: var(--ink); background-image: radial-gradient(circle, rgba(255, 255, 255, 0.11) 1.2px, transparent 1.2px); background-size: 22px 22px; color: var(--cream); }
+.contact h2 { font-size: clamp(2.1rem, 5vw, 3.3rem); margin-bottom: 14px; }
+.contact h2 em { color: var(--accent-bright); }
+.contact p { color: rgba(244, 240, 232, 0.72); }
+.contact .badge { background: rgba(255, 255, 255, 0.14); color: var(--cream); }
+.rows { display: grid; gap: 11px; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 18px; border-radius: 15px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.13); }
+.row .k { display: block; font-size: 11px; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: var(--accent-bright); margin-bottom: 2px; }
+.row a { font-weight: 700; text-decoration: none; word-break: break-word; font-size: 15.5px; transition: color 180ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .row a:hover { color: var(--accent-bright); } }
+.copy { min-height: 44px; min-width: 72px; padding: 0 15px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.28); background: transparent; color: var(--cream); font-family: var(--body); font-weight: 700; font-size: 14px; cursor: pointer; flex: none; transition: transform 160ms var(--ease-out), background-color 180ms var(--ease-out), color 180ms var(--ease-out); }
+.copy:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .copy:hover { background: var(--accent-bright); color: var(--ink); } }
+@media (max-width: 900px) { .contact { grid-template-columns: 1fr; } }
+
+footer { padding: 30px 0 44px; color: var(--ink-soft); font-size: 14.5px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+
+/* ---------- Reveals (only once JS confirms it is running) ---------- */
+html.js .reveal { opacity: 0; transform: translateY(24px); transition: opacity 620ms var(--ease-out), transform 620ms var(--ease-out); }
+html.js .reveal.in { opacity: 1; transform: none; }
+html.js .stats > div, html.js .step, html.js .work > .card { opacity: 0; transform: translateY(20px); transition: opacity 560ms var(--ease-out), transform 560ms var(--ease-out); }
+html.js .stats.in > div, html.js .steps.in > .step, html.js .work.in > .card { opacity: 1; transform: none; }
+html.js .work.in > .card:nth-child(odd) { transform: rotate(-0.5deg); }
+html.js .work.in > .card:nth-child(even) { transform: rotate(0.5deg); }
+html.js .stats.in > div:nth-child(2), html.js .steps.in > .step:nth-child(2), html.js .work.in > .card:nth-child(2) { transition-delay: 70ms; }
+html.js .stats.in > div:nth-child(3), html.js .steps.in > .step:nth-child(3), html.js .work.in > .card:nth-child(3) { transition-delay: 140ms; }
+html.js .stats.in > div:nth-child(4), html.js .work.in > .card:nth-child(4) { transition-delay: 210ms; }
+
+/* Hero intro */
+@keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+@keyframes wordUp { from { opacity: 0; transform: translateY(104%); } to { opacity: 1; transform: none; } }
+@keyframes archIn { from { opacity: 0; transform: translateY(26px) scale(0.975); } to { opacity: 1; transform: none; } }
+html.js .hero .badge, html.js .hero .lead, html.js .hero .cta { animation: rise 520ms var(--ease-out) both; }
+html.js .hero .lead { animation-delay: 240ms; }
+html.js .hero .cta { animation-delay: 320ms; }
+html.js .arch .shape { animation: archIn 700ms var(--ease-out) both; }
+html.js .arch .tagpill { animation: rise 420ms var(--ease-out) 560ms both; }
+html.js .arch .spin { animation: rise 420ms var(--ease-out) 660ms both; }
+html.js #headline .word { display: inline-block; animation: wordUp 600ms var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  html.js .reveal, html.js .stats > div, html.js .step, html.js .work > .card { opacity: 1; transform: none; transition: none; }
+  html.js .hero .badge, html.js .hero .lead, html.js .hero .cta,
+  html.js .arch .shape, html.js .arch .tagpill, html.js .arch .spin,
+  html.js #headline .word { animation: none; }
+  .card, .btn, .copy, .plate img { transition: none; }
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.className += " js";</script>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">Abdul<b>Kareem</b></a>
+    <nav aria-label="Main">
+      <ul class="pillnav">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#toolkit">Toolkit</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#contact">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 6.5 9 6.5 9-6.5"/></svg>
+      Get in touch
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="badge">AI Builder · Kadapa, India</span>
+        <h1 id="headline">I build <em>real</em> products with <span class="hl">AI.</span></h1>
+        <p class="lead">Apps, websites, videos and marketing, built end to end with AI. I have used these tools for hours every day since ChatGPT opened to the public in 2022.</p>
+        <div class="cta">
+          <a class="btn solid" href="#work">See the work
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn" href="#contact">Start a project</a>
+        </div>
+      </div>
+
+      <figure class="arch">
+        <span class="tagpill"><span class="dot"></span>Available for work</span>
+        <div class="shape">
+          <img src="assets/abdul-arch.webp" alt="Syed Abdul Kareem at his desk, with a laptop and a screen showing AI" width="760" height="1027" fetchpriority="high">
+        </div>
+        <div class="spin" aria-hidden="true">
+          <div class="disc"><div class="core"></div></div>
+          <svg viewBox="0 0 124 124">
+            <defs><path id="circ" d="M62,62 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0"/></defs>
+            <text><textPath href="#circ" startOffset="0">Apps · Websites · Videos · Marketing · </textPath></text>
+          </svg>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="ringwrap">
+    <div class="stage" id="stage">
+      <div class="ring" id="ring">
+        <article class="slab" style="transform:rotateY(0deg) translateZ(300px)">
+          <div class="pic"><img src="assets/waqtos.webp" alt="WaqtOS logo" width="818" height="900" loading="lazy"></div>
+          <div class="cap">WaqtOS</div>
+        </article>
+        <article class="slab word-slab" style="transform:rotateY(45deg) translateZ(300px)"><span>Apps</span></article>
+        <article class="slab" style="transform:rotateY(90deg) translateZ(300px)">
+          <div class="pic dark"><img src="assets/hoor-e-ain.webp" alt="HOOR-E-AIN logo" width="900" height="900" loading="lazy"></div>
+          <div class="cap">HOOR-E-AIN</div>
+        </article>
+        <article class="slab ink-slab" style="transform:rotateY(135deg) translateZ(300px)"><span>Websites</span></article>
+        <article class="slab" style="transform:rotateY(180deg) translateZ(300px)">
+          <div class="pic"><img src="assets/cricapex.webp" alt="CricApex logo" width="900" height="450" loading="lazy"></div>
+          <div class="cap">CricApex</div>
+        </article>
+        <article class="slab word-slab" style="transform:rotateY(225deg) translateZ(300px)"><span>Videos</span></article>
+        <article class="slab" style="transform:rotateY(270deg) translateZ(300px)">
+          <div class="pic"><img src="assets/kadapa-cars.webp" alt="Kadapa Cars logo" width="900" height="900" loading="lazy"></div>
+          <div class="cap">Kadapa Cars</div>
+        </article>
+        <article class="slab ink-slab" style="transform:rotateY(315deg) translateZ(300px)"><span>Marketing</span></article>
+      </div>
+    </div>
+    <p class="draghint">Drag to spin</p>
+  </section>
+
+  <div class="ghost" aria-hidden="true">
+    <div class="run">
+      <span>Built with AI — Apps · Websites · Videos · Marketing —&nbsp;</span>
+      <span>Built with AI — Apps · Websites · Videos · Marketing —&nbsp;</span>
+    </div>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="stats group">
+        <div><strong>8,000<sup>+</sup></strong><span>hours of hands-on AI use (est.)</span></div>
+        <div><strong>2022</strong><span>using AI daily since launch</span></div>
+        <div><strong>4</strong><span>products shipped</span></div>
+        <div><strong>4</strong><span>AI platforms in daily use</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="work">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="badge">Selected work</span>
+        <h2>Four things I built <em>with AI.</em></h2>
+        <p>Three apps and a website. Each went from idea to finished product using AI for the design, the code and the content.</p>
+      </div>
+
+      <div class="work group">
+        <article class="card wide">
+          <div class="plate"><img src="assets/waqtos.webp" alt="WaqtOS logo: a green dome and minarets inside a gold arch above an open book" width="818" height="900" loading="lazy"></div>
+          <div class="body">
+            <span class="kind">Personal operating system</span>
+            <h3>WaqtOS</h3>
+            <p>A Salah-centered personal operating system. It brings worship, time management, tasks, schedules and daily responsibilities into one place, so Muslims can live a more organized, balanced and purposeful life.</p>
+            <ul class="chips"><li>Salah-centered</li><li>Time management</li><li>Tasks and schedules</li><li>Daily responsibilities</li></ul>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="plate dark"><img src="assets/hoor-e-ain.webp" alt="HOOR-E-AIN logo: a red heart holding a mother and child, with a gold crescent and a rose" width="900" height="900" loading="lazy"></div>
+          <div class="body">
+            <span class="kind">App with AI companion</span>
+            <h3>HOOR-E-AIN</h3>
+            <p>A lifetime wellness, family and love companion. It organizes daily routines, tracks health and habits, supports spiritual and personal growth, keeps a private journal, and includes HOOR AI for everyday questions and encouragement.</p>
+            <ul class="chips"><li>Daily life</li><li>Health</li><li>Habits</li><li>Journal</li><li>HOOR AI</li></ul>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="plate"><img src="assets/cricapex.webp" alt="CricApex logo: a red cricket ball forming the letter C, with a bat and a blue swoosh" width="900" height="450" loading="lazy"></div>
+          <div class="body">
+            <span class="kind">Sports app</span>
+            <h3>CricApex</h3>
+            <p>A full cricket scoring and tournament platform: ball-by-ball live scoring, digital scorecards and player statistics, plus league and knockout tournaments with automatic fixtures, a points table and Net Run Rate.</p>
+            <ul class="chips"><li>Live scoring</li><li>Scorecards</li><li>Player stats</li><li>Tournaments</li></ul>
+          </div>
+        </article>
+
+        <article class="card wide">
+          <div class="plate"><img src="assets/kadapa-cars.webp" alt="Kadapa Cars logo: a blue car silhouette with a swoosh above the words Kadapa Cars" width="900" height="900" loading="lazy"></div>
+          <div class="body">
+            <span class="kind">Website</span>
+            <h3>Kadapa Cars</h3>
+            <p>A website built with AI for Kadapa Cars, taken from the first idea through to the finished pages.</p>
+            <ul class="chips"><li>Website</li><li>Built with AI</li></ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="process">
+    <div class="wrap">
+      <div class="head mid reveal">
+        <span class="badge">How I work</span>
+        <h2>Idea to shipped, <em>fast.</em></h2>
+        <p>AI removes the slow parts. What is left is deciding what to build and keeping the quality high.</p>
+      </div>
+      <div class="steps group">
+        <div class="step">
+          <div class="num">01</div>
+          <h3>Define the thing</h3>
+          <p>I start with who it is for and what one job it has to do. The scope is settled before a single screen exists, so nothing gets built twice.</p>
+        </div>
+        <div class="step">
+          <div class="num">02</div>
+          <h3>Build it with AI</h3>
+          <p>Design, code and content are produced with Claude, ChatGPT and Antigravity, with open-source models for work that runs locally. I review every output rather than shipping the first result.</p>
+        </div>
+        <div class="step">
+          <div class="num">03</div>
+          <h3>Ship and sharpen</h3>
+          <p>It goes live, then I use it, find what is clumsy and fix it. Each project teaches the next one something.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="toolkit">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="badge">Toolkit</span>
+        <h2>What I use, <em>what I make.</em></h2>
+        <p>If it can be built with AI, I want to learn it and ship it.</p>
+      </div>
+      <div class="cols">
+        <div class="panel reveal">
+          <h3>AI platforms, daily</h3>
+          <ul>
+            <li><span>Claude</span><span>Claude Code, Max plan</span></li>
+            <li><span>ChatGPT</span><span>Pro plan</span></li>
+            <li><span>Google Antigravity</span><span>Pro plan</span></li>
+            <li><span>Open-source models</span><span>Run locally</span></li>
+          </ul>
+        </div>
+        <div class="panel reveal">
+          <h3>What I build</h3>
+          <ul>
+            <li><span>Apps</span><span>Scoring, life management, personal OS</span></li>
+            <li><span>Websites</span><span>Business and brand sites</span></li>
+            <li><span>Videos</span><span>Made with AI tools</span></li>
+            <li><span>Marketing</span><span>Strategy decks and creatives</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="contact">
+    <div class="wrap">
+      <div class="contact reveal">
+        <div>
+          <span class="badge">Contact</span>
+          <h2>Let's build <em>something.</em></h2>
+          <p>Open to AI builder roles and freelance projects. Send me your idea and I will tell you how fast it can be built.</p>
+        </div>
+        <div class="rows">
+          <div class="row">
+            <div><span class="k">Email</span><a href="mailto:syedabdulkareempersonal@gmail.com">syedabdulkareempersonal@gmail.com</a></div>
+            <button class="copy" type="button" data-copy="syedabdulkareempersonal@gmail.com">Copy</button>
+          </div>
+          <div class="row">
+            <div><span class="k">Phone</span><a href="tel:+919515624770">+91 95156 24770</a></div>
+            <button class="copy" type="button" data-copy="+91 95156 24770">Copy</button>
+          </div>
+          <div class="row">
+            <div><span class="k">LinkedIn</span><a href="https://www.linkedin.com/in/syedabdulkareemofficial/" target="_blank" rel="noopener">linkedin.com/in/syedabdulkareemofficial</a></div>
+            <button class="copy" type="button" data-copy="https://www.linkedin.com/in/syedabdulkareemofficial/">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap"><span>Syed Abdul Kareem · Kadapa, Andhra Pradesh, India</span><span>Built with AI</span></div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Copy buttons ---------- */
+  document.querySelectorAll(".copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var txt = b.getAttribute("data-copy");
+      var ok = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1600); };
+      var no = function () { b.textContent = "Select it"; setTimeout(function () { b.textContent = "Copy"; }, 1600); };
+      try { navigator.clipboard.writeText(txt).then(ok, no); } catch (e) { no(); }
+    });
+  });
+
+  /* ---------- Headline: split into words so each can rise on its own ---------- */
+  var hl = document.getElementById("headline");
+  if (hl && !reduce) {
+    var frag = document.createDocumentFragment(), n = 0;
+    Array.prototype.slice.call(hl.childNodes).forEach(function (node) {
+      if (node.nodeType === 3) {
+        node.textContent.split(/(\s+)/).forEach(function (part) {
+          if (!part.trim()) { if (part) frag.appendChild(document.createTextNode(part)); return; }
+          var s = document.createElement("span");
+          s.className = "word"; s.textContent = part;
+          s.style.animationDelay = (n++ * 55) + "ms";
+          frag.appendChild(s);
+        });
+      } else {
+        var w = document.createElement("span");
+        w.className = "word";
+        w.style.animationDelay = (n++ * 55) + "ms";
+        w.appendChild(node.cloneNode(true));
+        frag.appendChild(w);
+      }
+    });
+    hl.textContent = "";
+    hl.appendChild(frag);
+  }
+
+  /* ---------- Scroll reveals.
+     IntersectionObserver, not a scroll listener: this page runs in a frame,
+     so the scrolling element is not always this document. ---------- */
+  var targets = document.querySelectorAll(".reveal, .group");
+  if (!("IntersectionObserver" in window) || reduce) {
+    Array.prototype.forEach.call(targets, function (el) { el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.01 });
+    Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
+    /* Safety net: nothing stays invisible if the observer never fires */
+    setTimeout(function () {
+      Array.prototype.forEach.call(targets, function (el) { el.classList.add("in"); });
+    }, 4000);
+  }
+
+  /* ---------- Drag-to-spin ring ---------- */
+  (function ring() {
+    var stage = document.getElementById("stage"), r = document.getElementById("ring");
+    if (!stage || !r) return;
+    var slabs = Array.prototype.slice.call(r.children);
+    var n = slabs.length, step = 360 / n;
+    var radius = 480, rot = 0, vel = 0.05, dragging = false, lastX = 0, lastT = 0, id = 0, onScreen = true;
+
+    function layout() {
+      var narrow = window.innerWidth < 760;
+      var w = narrow ? 182 : 230;
+      var base = (w / 2) / Math.tan(Math.PI / n);
+      radius = Math.round(base * (narrow ? 1.45 : 1.8));
+      place();
+    }
+    function place() {
+      for (var i = 0; i < n; i++) {
+        slabs[i].style.transform = "rotateY(" + (i * step) + "deg) translateZ(" + radius + "px)";
+      }
+      apply();
+    }
+    function apply() {
+      r.style.transform = "rotateY(" + rot + "deg)";
+      for (var i = 0; i < n; i++) {
+        var a = (rot + i * step) * Math.PI / 180;
+        var depth = Math.cos(a);                       /* 1 at the front, -1 at the back */
+        slabs[i].style.opacity = (0.34 + 0.66 * (depth + 1) / 2).toFixed(3);
+      }
+    }
+
+    stage.addEventListener("pointerdown", function (e) {
+      dragging = true; lastX = e.clientX; lastT = e.timeStamp; vel = 0;
+      stage.classList.add("dragging");
+      try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    stage.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - lastX, dt = Math.max(1, e.timeStamp - lastT);
+      rot += dx * 0.26;
+      vel = Math.max(-6, Math.min(6, (dx * 0.26) / dt * 16));
+      lastX = e.clientX; lastT = e.timeStamp;
+      apply();
+    });
+    function release(e) {
+      if (!dragging) return;
+      dragging = false; stage.classList.remove("dragging");
+      try { stage.releasePointerCapture(e.pointerId); } catch (err) {}
+    }
+    stage.addEventListener("pointerup", release);
+    stage.addEventListener("pointercancel", release);
+
+    function loop() {
+      id = 0;
+      if (!onScreen) return;
+      if (!dragging) {
+        if (Math.abs(vel) > 0.06) { vel *= 0.955; } else { vel = vel < 0 ? -0.05 : 0.05; }
+        rot += vel;
+        apply();
+      }
+      id = requestAnimationFrame(loop);
+    }
+
+    layout();
+    window.addEventListener("resize", layout);
+    if (reduce) return;
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) {
+        onScreen = en[0].isIntersecting;
+        if (onScreen && !id) id = requestAnimationFrame(loop);
+      }, { threshold: 0 }).observe(stage);
+    }
+    document.addEventListener("visibilitychange", function () {
+      onScreen = !document.hidden;
+      if (onScreen && !id) id = requestAnimationFrame(loop);
+    });
+    id = requestAnimationFrame(loop);
+  })();
+})();
+</script>
+</body>
+</html>

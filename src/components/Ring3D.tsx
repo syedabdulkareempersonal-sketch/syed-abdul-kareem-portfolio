@@ -16,7 +16,7 @@ export const Ring3D: React.FC = () => {
     lastTime: 0,
     isVisible: true,
     reducedMotion: false,
-    radius: 360,
+    radius: 370,
     cardW: 215,
     cardH: 255,
   });
@@ -37,36 +37,36 @@ export const Ring3D: React.FC = () => {
       if (vw < 480) {
         st.radius = 225;
         st.cardW = 152;
-        st.cardH = 188;
+        st.cardH = 190;
       } else if (vw < 768) {
         st.radius = 275;
         st.cardW = 178;
-        st.cardH = 216;
+        st.cardH = 218;
       } else if (vw < 1024) {
-        st.radius = 330;
+        st.radius = 335;
         st.cardW = 198;
-        st.cardH = 238;
+        st.cardH = 240;
       } else {
-        st.radius = 385;
-        st.cardW = 220;
-        st.cardH = 262;
+        st.radius = 395;
+        st.cardW = 222;
+        st.cardH = 264;
       }
       renderFrame();
     };
 
     const renderFrame = () => {
       if (!carousel) return;
-      carousel.style.transform = `translateZ(${-st.radius * 0.35}px) rotateX(-5deg) rotateY(${st.rotationY}deg)`;
+      carousel.style.transform = `translateZ(${-st.radius * 0.32}px) rotateX(-6deg) rotateY(${st.rotationY}deg)`;
 
       slabRefs.current.forEach((slab, idx) => {
         if (!slab) return;
         const itemAngle = idx * angleStep;
         const totalDeg = (itemAngle + st.rotationY) % 360;
         const rad = (totalDeg * Math.PI) / 180;
-        const cosVal = Math.cos(rad); // +1 at front, -1 at back
+        const cosVal = Math.cos(rad);
 
-        const normalizedFront = (cosVal + 1) / 2; // 0 (back) to 1 (front)
-        const opacity = 0.25 + normalizedFront * 0.75;
+        const normalizedFront = (cosVal + 1) / 2;
+        const opacity = 0.22 + normalizedFront * 0.78;
 
         slab.style.width = `${st.cardW}px`;
         slab.style.height = `${st.cardH}px`;
@@ -96,9 +96,9 @@ export const Ring3D: React.FC = () => {
         if (!st.isPointerDown) {
           if (Math.abs(st.velocity) > 0.01) {
             st.rotationY += st.velocity;
-            st.velocity *= 0.94;
+            st.velocity *= 0.945;
           } else if (!st.reducedMotion) {
-            st.rotationY -= 0.16;
+            st.rotationY -= 0.15;
           }
           renderFrame();
         }
@@ -143,7 +143,7 @@ export const Ring3D: React.FC = () => {
     if (carouselRef.current) {
       const count = PORTFOLIO_DATA.ringItems.length;
       const angleStep = 360 / count;
-      carouselRef.current.style.transform = `translateZ(${-st.radius * 0.35}px) rotateX(-5deg) rotateY(${st.rotationY}deg)`;
+      carouselRef.current.style.transform = `translateZ(${-st.radius * 0.32}px) rotateX(-6deg) rotateY(${st.rotationY}deg)`;
 
       slabRefs.current.forEach((slab, idx) => {
         if (!slab) return;
@@ -151,7 +151,7 @@ export const Ring3D: React.FC = () => {
         const totalDeg = (itemAngle + st.rotationY) % 360;
         const cosVal = Math.cos((totalDeg * Math.PI) / 180);
         const normalizedFront = (cosVal + 1) / 2;
-        slab.style.opacity = (0.25 + normalizedFront * 0.75).toFixed(3);
+        slab.style.opacity = (0.22 + normalizedFront * 0.78).toFixed(3);
       });
     }
   };
@@ -175,41 +175,26 @@ export const Ring3D: React.FC = () => {
   const getSlabTheme = (item: RingItem) => {
     switch (item.accent) {
       case 'emerald':
-        return 'bg-gradient-to-br from-[#14F195] to-[#0B7A5E] text-[#041019] border border-[#14F195] shadow-[0_20px_50px_-12px_rgba(20,241,149,0.4)] dot-texture-light';
-      case 'navy':
-        return 'bg-gradient-to-br from-[#13203D] to-[#070D1C] text-white border border-[#14F195]/40 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.85)] dot-texture-emerald';
+        return 'bg-gradient-to-b from-[#071F1C]/90 to-[#050A14]/95 text-white border border-[#00F5A0]/45 shadow-[0_24px_60px_-14px_rgba(0,245,160,0.22),inset_0_1px_0_0_rgba(0,245,160,0.35)] backdrop-blur-xl dot-texture-emerald';
       case 'gold':
-        return 'bg-gradient-to-br from-[#F5C451] to-[#B58917] text-[#050811] border border-[#FDE68A] shadow-[0_20px_50px_-12px_rgba(245,196,81,0.38)] dot-texture-light';
+        return 'bg-gradient-to-b from-[#1F1A0A]/90 to-[#050A14]/95 text-white border border-[#E5B84B]/45 shadow-[0_24px_60px_-14px_rgba(229,184,75,0.2),inset_0_1px_0_0_rgba(229,184,75,0.35)] backdrop-blur-xl dot-texture-light';
+      case 'navy':
+        return 'bg-gradient-to-b from-[#0B192E]/90 to-[#050A14]/95 text-white border border-[#00D9F5]/40 shadow-[0_24px_60px_-14px_rgba(0,217,245,0.2),inset_0_1px_0_0_rgba(0,217,245,0.3)] backdrop-blur-xl dot-texture-light';
       default:
-        return 'bg-[#0B1325]/95 text-white border border-white/15 shadow-[0_22px_50px_-12px_rgba(0,0,0,0.85)] backdrop-blur-xl';
+        return 'bg-gradient-to-b from-[#0C1426]/92 to-[#050811]/96 text-white border border-white/15 shadow-[0_24px_60px_-14px_rgba(0,0,0,0.9),inset_0_1px_0_0_rgba(255,255,255,0.18)] backdrop-blur-xl';
     }
   };
 
   return (
     <section
       aria-label="Interactive 3D Project & Capability Ring"
-      className="relative mx-auto max-w-[1440px] overflow-hidden px-4 py-8 sm:px-8 sm:py-12"
+      className="relative z-10 mx-auto max-w-[1440px] overflow-hidden px-4 py-8 sm:px-8 sm:py-12"
     >
       {/* Top bar with DRAG TO SPIN pill & accessible keyboard controls */}
       <div className="mx-auto mb-4 flex max-w-[1280px] flex-wrap items-center justify-between gap-3">
-        <div className="inline-flex items-center gap-2.5 rounded-full border border-[#14F195]/35 bg-[#081022]/90 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.14em] text-[#14F195] shadow-[0_0_24px_rgba(20,241,149,0.18)]">
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-[#14F195]"
-            aria-hidden="true"
-          >
-            <path d="M18 8L22 12L18 16" />
-            <path d="M6 8L2 12L6 16" />
-            <line x1="2" y1="12" x2="22" y2="12" />
-          </svg>
-          <span>DRAG TO SPIN · 3D ORBIT</span>
+        <div className="section-pill">
+          <span className="section-pill-dot" aria-hidden="true" />
+          <span>DRAG TO SPIN · 3D ORBITAL DECK</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -217,7 +202,7 @@ export const Ring3D: React.FC = () => {
             type="button"
             onClick={() => nudgeRing(3.2)}
             aria-label="Spin ring left"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-[#0B1325] text-white transition-all hover:border-[#14F195] hover:text-[#14F195] active:scale-95"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-[#070D19]/85 text-white backdrop-blur-md transition-all hover:border-[#00F5A0] hover:text-[#00F5A0] active:scale-95"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
               <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
@@ -227,7 +212,7 @@ export const Ring3D: React.FC = () => {
             type="button"
             onClick={() => nudgeRing(-3.2)}
             aria-label="Spin ring right"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-[#0B1325] text-white transition-all hover:border-[#14F195] hover:text-[#14F195] active:scale-95"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-[#070D19]/85 text-white backdrop-blur-md transition-all hover:border-[#00F5A0] hover:text-[#00F5A0] active:scale-95"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
               <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
@@ -247,12 +232,6 @@ export const Ring3D: React.FC = () => {
           isDragging ? 'cursor-grabbing' : 'cursor-grab'
         }`}
       >
-        {/* Subtle glowing orbital floor reflection */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-4 h-16 w-3/4 max-w-[680px] rounded-full bg-[#14F195]/15 blur-3xl"
-        />
-
         <div ref={carouselRef} className="ring-carousel relative h-full w-full">
           {PORTFOLIO_DATA.ringItems.map((item, idx) => (
             <div
@@ -265,23 +244,23 @@ export const Ring3D: React.FC = () => {
               {/* Top row */}
               <div className="flex items-center justify-between">
                 <span
-                  className={`rounded-full px-2.5 py-1 font-display text-[10px] font-extrabold uppercase tracking-wider ${
+                  className={`rounded-full px-2.5 py-0.5 font-mono text-[9.5px] font-bold uppercase tracking-widest ${
                     item.type === 'project'
-                      ? 'border border-[#14F195]/35 bg-[#14F195]/15 text-[#14F195]'
-                      : item.accent === 'navy'
-                      ? 'border border-white/20 bg-white/10 text-white'
-                      : 'bg-black/20 text-current'
+                      ? 'border border-[#00F5A0]/35 bg-[#00F5A0]/12 text-[#00F5A0]'
+                      : item.accent === 'gold'
+                      ? 'border border-[#E5B84B]/40 bg-[#E5B84B]/15 text-[#FDE68A]'
+                      : 'border border-[#00D9F5]/35 bg-[#00D9F5]/12 text-[#00D9F5]'
                   }`}
                 >
                   {item.type === 'project' ? 'SHIPPED' : 'PILLAR'}
                 </span>
-                <span className="font-display text-xs font-extrabold opacity-75">0{idx + 1}</span>
+                <span className="font-mono text-[11px] font-bold text-slate-400">0{idx + 1}</span>
               </div>
 
               {/* Center visual: project logo OR category display icon */}
               {item.type === 'project' && item.logo ? (
                 <div className="my-auto flex items-center justify-center py-2">
-                  <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-[#050811] p-2 shadow-inner sm:h-24 sm:w-24">
+                  <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border border-white/12 bg-[#03060C] p-2.5 shadow-[0_12px_30px_rgba(0,0,0,0.75)] sm:h-24 sm:w-24">
                     <img
                       src={item.logo}
                       alt={`${item.title} logo`}
@@ -294,14 +273,20 @@ export const Ring3D: React.FC = () => {
                 </div>
               ) : (
                 <div className="my-auto flex flex-col justify-center py-2">
-                  <div className="mb-2 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-black/15">
+                  <div
+                    className={`mb-2 inline-flex h-11 w-11 items-center justify-center rounded-2xl border ${
+                      item.accent === 'gold'
+                        ? 'border-[#E5B84B]/40 bg-[#E5B84B]/12 text-[#FDE68A]'
+                        : 'border-[#00F5A0]/40 bg-[#00F5A0]/12 text-[#00F5A0]'
+                    }`}
+                  >
                     <svg
                       width="20"
                       height="20"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2.2"
+                      strokeWidth="2.1"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       aria-hidden="true"
@@ -316,10 +301,10 @@ export const Ring3D: React.FC = () => {
 
               {/* Bottom Title & Subtitle */}
               <div>
-                <div className="font-display text-lg font-extrabold leading-tight tracking-tight sm:text-xl">
+                <div className="font-display text-lg font-extrabold leading-tight tracking-tight text-white sm:text-xl">
                   {item.title}
                 </div>
-                <div className="mt-0.5 text-xs font-semibold opacity-80">{item.subtitle}</div>
+                <div className="mt-1 font-mono text-[11px] font-medium text-slate-400">{item.subtitle}</div>
               </div>
             </div>
           ))}

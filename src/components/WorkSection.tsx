@@ -1,175 +1,194 @@
-import React from 'react';
-import { PORTFOLIO_DATA } from '../data/portfolio';
-import { useScrollReveal } from '../hooks/useScrollReveal';
-import { SpotlightCard } from './SpotlightCard';
+import React, { useState } from 'react';
+import { PORTFOLIO_DATA, ProjectItem } from '../data/portfolio';
 
 export const WorkSection: React.FC = () => {
-  const sectionRef = useScrollReveal<HTMLElement>(100);
+  const { projects } = PORTFOLIO_DATA;
+  const [activeProject, setActiveProject] = useState<ProjectItem>(projects[0]);
 
   return (
     <section
       id="work"
-      ref={sectionRef}
-      className="relative z-10 mx-auto max-w-[1280px] px-4 py-16 sm:px-8 sm:py-24"
+      aria-label="Selected Work"
+      className="border-b border-rule bg-bone"
     >
-      {/* Section Header */}
-      <div className="reveal-up mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-        <div>
-          <div className="section-pill mb-4">
-            <span className="section-pill-dot" aria-hidden="true" />
-            <span>[03] // SELECTED WORK · SHIPPED PRODUCTS</span>
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-24">
+        {/* Section Heading */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-10 border-b border-rule">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-vermilion">
+              02 / Selected Works (2022 – 2026)
+            </p>
+            <h2 className="mt-2 display-monument uppercase text-ink text-4xl sm:text-6xl lg:text-7xl">
+              Shipped{' '}
+              <span className="serif-editorial italic font-normal lowercase text-vermilion">
+                products
+              </span>
+            </h2>
           </div>
-          <h2 className="section-h2">
-            Products <span className="serif-italic font-normal text-neon-emerald">shipped</span> with AI.
-          </h2>
+          <p className="font-mono text-xs text-ink-muted max-w-sm">
+            Four products architected, designed, and built end to end with AI. Select or hover any entry to inspect the build dossier.
+          </p>
         </div>
-        <p className="max-w-[440px] text-base font-medium leading-relaxed text-slate-300">
-          Real applications and websites built from initial concept to working product using modern AI workflows.
-        </p>
-      </div>
 
-      {/* Bento Grid */}
-      <div className="grid grid-cols-1 gap-7 lg:grid-cols-12">
-        {PORTFOLIO_DATA.projects.map((project, index) => {
-          const isWide = project.featuredWide;
-          const hasLiveUrl = Boolean(project.url && project.url.trim().length > 0);
-          const isEmerald = project.accentColor === '#10A37F';
+        {/* Signature Split Stage: Sticky Visual Dossier + Interactive Editorial Index */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 pt-10 items-start">
+          {/* Left Sticky Stage (5 cols on desktop) */}
+          <div className="lg:col-span-5 lg:sticky lg:top-24">
+            <div className="rounded-2xl border border-ink/15 bg-bone-warm p-6 sm:p-8 transition-all duration-500">
+              <div className="flex items-center justify-between border-b border-rule pb-4">
+                <span className="font-mono text-xs uppercase tracking-wider text-ink-muted">
+                  Dossier // {activeProject.id.toUpperCase()}
+                </span>
+                <span className="font-mono text-xs px-2.5 py-0.5 rounded-full bg-ink text-bone">
+                  {activeProject.category}
+                </span>
+              </div>
 
-          return (
-            <SpotlightCard
-              key={project.id}
-              as="article"
-              maxTilt={isWide ? 2.5 : 4}
-              glowColor={isEmerald ? 'rgba(0, 245, 160, 0.16)' : 'rgba(229, 184, 75, 0.16)'}
-              className={`reveal-up cyber-glass rounded-[32px] p-7 sm:p-9 ${
-                isWide ? 'lg:col-span-12' : 'lg:col-span-6'
-              }`}
-            >
-              {/* Top glowing accent bar */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 top-0 h-[2px] opacity-90"
-                style={{
-                  background: isEmerald
-                    ? 'linear-gradient(90deg, transparent, #00F5A0, #00D9F5, transparent)'
-                    : 'linear-gradient(90deg, transparent, #E5B84B, #FDE68A, transparent)',
-                }}
-              />
+              {/* Project Logo Stage */}
+              <div className="my-6 aspect-[16/10] rounded-xl bg-bone border border-rule flex items-center justify-center p-6 overflow-hidden">
+                <img
+                  key={activeProject.id}
+                  src={activeProject.logo}
+                  alt={activeProject.logoAlt}
+                  loading="lazy"
+                  className="max-h-full max-w-full object-contain transition-transform duration-500 ease-expo-out scale-100 hover:scale-105"
+                />
+              </div>
 
-              <div
-                className={
-                  isWide
-                    ? 'grid grid-cols-1 items-center gap-8 lg:grid-cols-12'
-                    : 'flex h-full flex-col justify-between'
-                }
-              >
-                {/* Logo & Header block */}
-                <div className={isWide ? 'lg:col-span-5' : ''}>
-                  <div className="mb-6 flex items-center justify-between gap-4">
-                    {/* Project Logo with holographic pedestal */}
-                    <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-[#04070E] p-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.75)] sm:h-24 sm:w-24">
-                      <div
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 opacity-35"
-                        style={{
-                          background: isEmerald
-                            ? 'radial-gradient(circle at center, rgba(0,245,160,0.35), transparent 70%)'
-                            : 'radial-gradient(circle at center, rgba(229,184,75,0.35), transparent 70%)',
-                        }}
-                      />
+              <h3 className="font-display font-bold text-2xl sm:text-3xl text-ink">
+                {activeProject.title}
+              </h3>
+
+              <p className="mt-3 text-sm sm:text-base text-ink-2 leading-relaxed">
+                {activeProject.description}
+              </p>
+
+              {activeProject.extraDetail && (
+                <p className="mt-2 text-xs sm:text-sm text-ink-muted leading-relaxed">
+                  {activeProject.extraDetail}
+                </p>
+              )}
+
+              {/* Capability Tags */}
+              <div className="mt-6 flex flex-wrap gap-2">
+                {activeProject.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-mono text-[11px] px-3 py-1 rounded-full bg-bone border border-rule text-ink-2"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Conditional Live URL Button — Only renders when url is non-empty */}
+              {activeProject.url && activeProject.url.trim() !== '' && (
+                <div className="mt-6 pt-5 border-t border-rule">
+                  <a
+                    href={activeProject.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id={`work-dossier-visit-${activeProject.id}`}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-vermilion text-bone font-mono text-xs uppercase tracking-wider hover:bg-ink transition-colors"
+                  >
+                    <span>Visit live project</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right: Numbered Editorial Monograph List (7 cols on desktop) */}
+          <div className="lg:col-span-7 divide-y divide-rule border-t border-b border-rule">
+            {projects.map((project, index) => {
+              const isSelected = activeProject.id === project.id;
+              const hasLiveUrl = Boolean(project.url && project.url.trim() !== '');
+
+              return (
+                <article
+                  key={project.id}
+                  onMouseEnter={() => setActiveProject(project)}
+                  onFocus={() => setActiveProject(project)}
+                  onClick={() => setActiveProject(project)}
+                  tabIndex={0}
+                  id={`work-item-${project.id}`}
+                  aria-label={`${project.title} — ${project.category}`}
+                  className={`group cursor-pointer py-8 sm:py-10 px-4 sm:px-6 transition-colors duration-300 ${
+                    isSelected ? 'bg-bone-warm/80' : 'hover:bg-bone-warm/40'
+                  }`}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+                    <div className="flex items-baseline gap-4">
+                      <span
+                        className={`font-mono text-xs transition-colors ${
+                          isSelected ? 'text-vermilion font-semibold' : 'text-ink-faint'
+                        }`}
+                      >
+                        0{index + 1}
+                      </span>
+                      <h3 className="font-display font-bold text-2xl sm:text-4xl text-ink group-hover:text-vermilion transition-colors">
+                        {project.title}
+                      </h3>
+                    </div>
+                    <span className="font-mono text-xs uppercase tracking-wider text-ink-muted">
+                      {project.category}
+                    </span>
+                  </div>
+
+                  <div className="mt-4 pl-0 sm:pl-8 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                    <div className="sm:col-span-9 space-y-2">
+                      <p className="text-sm sm:text-base text-ink-2 leading-relaxed">
+                        {project.description}
+                      </p>
+                      {project.extraDetail && (
+                        <p className="text-xs sm:text-sm text-ink-muted leading-relaxed">
+                          {project.extraDetail}
+                        </p>
+                      )}
+                      <div className="pt-2 flex flex-wrap gap-1.5">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded bg-bone border border-rule text-ink-muted"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-3 flex sm:justify-end items-center gap-3">
                       <img
                         src={project.logo}
                         alt={project.logoAlt}
-                        width={96}
-                        height={96}
                         loading="lazy"
-                        decoding="async"
-                        className="relative z-10 max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110"
+                        className="w-14 h-14 rounded-xl object-contain bg-bone border border-rule p-1.5"
                       />
                     </div>
-
-                    <div className="flex flex-col items-end gap-1.5">
-                      <span className="font-mono text-[10px] font-semibold tracking-widest text-slate-500">
-                        PRJ // 0{index + 1}
-                      </span>
-                      <span
-                        className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider ${
-                          isEmerald
-                            ? 'border-[#00F5A0]/35 bg-[#00F5A0]/10 text-[#00F5A0]'
-                            : 'border-[#E5B84B]/35 bg-[#E5B84B]/10 text-[#E5B84B]'
-                        }`}
-                      >
-                        <span
-                          className={`h-1.5 w-1.5 rounded-full ${
-                            isEmerald ? 'bg-[#00F5A0] shadow-[0_0_8px_#00F5A0]' : 'bg-[#E5B84B] shadow-[0_0_8px_#E5B84B]'
-                          }`}
-                        />
-                        {project.category}
-                      </span>
-                    </div>
                   </div>
 
-                  <h3 className="font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-                    {project.title}
-                  </h3>
-                </div>
-
-                {/* Description, Tags, and Conditional Live Link */}
-                <div className={isWide ? 'lg:col-span-7' : 'mt-4 flex flex-1 flex-col justify-between'}>
-                  <div>
-                    <p className="text-base font-medium leading-relaxed text-slate-200 sm:text-lg">
-                      {project.description}
-                    </p>
-
-                    {project.extraDetail && (
-                      <p className="mt-3.5 rounded-2xl border border-white/10 bg-[#04070E]/85 px-4 py-3 text-sm font-medium leading-relaxed text-slate-300">
-                        {project.extraDetail}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.07] pt-5">
-                    <div className="flex flex-wrap gap-2" aria-label={`${project.title} features`}>
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-white/12 bg-white/[0.04] px-3.5 py-1.5 font-mono text-[11px] font-medium text-slate-200 transition-colors group-hover:border-white/20"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Automatically appears only when project.url is filled in src/data/portfolio.ts */}
-                    {hasLiveUrl && (
+                  {/* Automatic Live Link Button when project.url is populated in data */}
+                  {hasLiveUrl && (
+                    <div className="mt-5 pl-0 sm:pl-8">
                       <a
                         href={project.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex min-h-[42px] items-center gap-2 rounded-full border border-[#00F5A0]/50 bg-[#00F5A0]/15 px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wider text-[#00F5A0] transition-all hover:bg-[#00F5A0] hover:text-[#020806]"
+                        id={`work-card-visit-${project.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ink text-bone font-mono text-xs uppercase tracking-wider hover:bg-vermilion transition-colors"
                       >
                         <span>Visit live project</span>
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.4"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
-                          <path d="M7 17L17 7M7 7h10v10" />
-                        </svg>
+                        <span aria-hidden="true">↗</span>
                       </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </SpotlightCard>
-          );
-        })}
+                    </div>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

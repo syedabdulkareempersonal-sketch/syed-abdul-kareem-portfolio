@@ -1,111 +1,97 @@
 import React from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolio';
-import { useScrollReveal } from '../hooks/useScrollReveal';
-import { SpotlightCard } from './SpotlightCard';
 
 export const JourneyEducationSection: React.FC = () => {
-  const sectionRef = useScrollReveal<HTMLElement>(90);
   const { journey, education } = PORTFOLIO_DATA;
 
   return (
     <section
       id="journey"
-      ref={sectionRef}
-      className="relative z-10 mx-auto max-w-[1280px] px-4 py-16 sm:px-8 sm:py-24"
+      aria-label="AI Journey and Education"
+      className="border-b border-rule bg-bone"
     >
-      {/* Header */}
-      <div className="reveal-up mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-        <div>
-          <div className="section-pill mb-4">
-            <span className="section-pill-dot" aria-hidden="true" />
-            <span>[06] // TIMELINE · 2022 → 2026</span>
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-24">
+        {/* Part 1: 2022 -> 2026 AI Chronicle */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-10 border-b border-rule">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-vermilion">
+              05 / Chronicle (2022 → 2026)
+            </p>
+            <h2 className="mt-2 display-monument uppercase text-ink text-4xl sm:text-5xl lg:text-6xl">
+              The AI{' '}
+              <span className="serif-editorial italic font-normal lowercase text-vermilion">
+                journey
+              </span>
+            </h2>
           </div>
-          <h2 className="section-h2">
-            My <span className="serif-italic font-normal text-neon-emerald">journey</span> with AI.
-          </h2>
+          <p className="font-mono text-xs uppercase tracking-wider text-ink-2">
+            {journey.positioningLine}
+          </p>
         </div>
 
-        <div className="inline-flex items-center gap-2.5 rounded-full border border-[#00F5A0]/40 bg-[#00F5A0]/10 px-5 py-2.5 font-mono text-xs font-semibold text-[#00F5A0] sm:text-sm">
-          <span className="h-2 w-2 rounded-full bg-[#00F5A0] shadow-[0_0_10px_#00F5A0]" />
-          <span>{journey.positioningLine}</span>
-        </div>
-      </div>
-
-      {/* 3-Step Journey Timeline */}
-      <div className="relative mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
-        {journey.milestones.map((item, idx) => (
-          <SpotlightCard
-            key={item.period}
-            glowColor="rgba(0, 245, 160, 0.16)"
-            className="reveal-up cyber-glass rounded-[28px] p-7 sm:p-8"
-          >
-            {/* Top neon accent */}
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-rule border-b border-rule">
+          {journey.milestones.map((item, idx) => (
             <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#00F5A0] via-[#00D9F5] to-transparent"
-            />
-
-            <div className="flex h-full flex-col justify-between">
+              key={item.period}
+              className="py-8 md:px-6 first:md:pl-0 last:md:pr-0 flex flex-col justify-between"
+            >
               <div>
-                <div className="mb-6 flex items-center justify-between gap-3">
-                  <span className="font-display text-2xl font-extrabold tracking-tight text-neon-emerald sm:text-3xl">
-                    {item.period}
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono text-xs text-vermilion font-semibold">
+                    0{idx + 1} // {item.period}
                   </span>
-                  <span className="rounded-full border border-[#E5B84B]/35 bg-[#E5B84B]/12 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-[#E5B84B]">
+                  <span className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded bg-bone-warm text-ink-2">
                     {item.badge}
                   </span>
                 </div>
-
-                <h3 className="mb-3 font-display text-xl font-extrabold text-white">{item.title}</h3>
-                <p className="text-base font-medium leading-relaxed text-slate-300">{item.description}</p>
-              </div>
-
-              <div className="mt-6 flex items-center justify-between border-t border-white/[0.08] pt-4 font-mono text-[11px] font-semibold uppercase tracking-widest text-slate-400">
-                <span>PHASE // 0{idx + 1}</span>
-                <span className="text-[#00F5A0]">● VERIFIED</span>
+                <h3 className="mt-4 font-display font-bold text-xl sm:text-2xl text-ink">
+                  {item.title}
+                </h3>
+                <p className="mt-2.5 text-sm sm:text-base text-ink-2 leading-relaxed">
+                  {item.description}
+                </p>
               </div>
             </div>
-          </SpotlightCard>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Education Panel */}
-      <SpotlightCard
-        maxTilt={2}
-        glowColor="rgba(229, 184, 75, 0.16)"
-        className="reveal-up cyber-glass-gold relative overflow-hidden rounded-[32px] p-7 sm:p-10"
-      >
-        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#E5B84B]/40 bg-[#E5B84B]/12 px-3.5 py-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-[#E5B84B]">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M6 12v5c3 3 9 3 12 0v-5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span>EDUCATION // ACADEMIC CREDENTIALS</span>
+        {/* Part 2: Academic Credentials & Single-Line Certificate */}
+        <div className="mt-14 pt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-baseline">
+            <div className="lg:col-span-4">
+              <p className="font-mono text-xs uppercase tracking-widest text-vermilion">
+                Academic Foundation
+              </p>
+              <h3 className="mt-1 font-display font-bold text-2xl text-ink">
+                Education & Certification
+              </h3>
             </div>
 
-            <h3 className="font-display text-2xl font-extrabold text-white sm:text-3xl">
-              {education.degree} —{' '}
-              <span className="text-neon-gold">{education.institution}</span>, {education.location}
-            </h3>
+            <div className="lg:col-span-8 space-y-5">
+              {/* Degree */}
+              <div className="p-6 rounded-2xl border border-rule bg-bone-warm/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h4 className="font-display font-bold text-lg sm:text-xl text-ink">
+                    {education.degree}
+                  </h4>
+                  <p className="text-sm sm:text-base text-ink-2">
+                    {education.institution}, {education.location}
+                  </p>
+                </div>
+                <div className="sm:text-right font-mono text-xs text-ink-muted shrink-0">
+                  <div className="text-ink font-semibold">{education.score}</div>
+                  <div>{education.period}</div>
+                </div>
+              </div>
 
-            {/* Certificate shown as one short line only */}
-            <p className="mt-4 border-t border-white/12 pt-3.5 font-body text-sm font-semibold text-slate-200 sm:text-base">
-              {education.certificateSingleLine}
-            </p>
-          </div>
-
-          <div className="flex shrink-0 flex-wrap items-center gap-3 lg:flex-col lg:items-end">
-            <span className="rounded-full border border-white/15 bg-[#04070E]/85 px-4 py-2 font-mono text-xs font-semibold text-white">
-              {education.period}
-            </span>
-            <span className="rounded-full border border-[#00F5A0]/45 bg-[#00F5A0]/15 px-4 py-2 font-mono text-xs font-semibold text-[#00F5A0]">
-              {education.score}
-            </span>
+              {/* Single short line certificate as strictly requested */}
+              <p className="font-mono text-xs sm:text-sm text-ink-2 px-2">
+                {education.certificateSingleLine}
+              </p>
+            </div>
           </div>
         </div>
-      </SpotlightCard>
+      </div>
     </section>
   );
 };

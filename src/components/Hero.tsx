@@ -1,273 +1,243 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PORTFOLIO_DATA } from '../data/portfolio';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export const Hero: React.FC = () => {
-  const heroRef = useRef<HTMLElement | null>(null);
-  const monolithRef = useRef<HTMLDivElement | null>(null);
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+  const { owner, hero } = PORTFOLIO_DATA;
+  const sectionRef = useRef<HTMLElement>(null);
+  const portraitWrapRef = useRef<HTMLDivElement>(null);
+  const portraitImgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion || !heroRef.current) return;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced || !sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      const words = heroRef.current?.querySelectorAll('.hero-word');
-      const metaItems = heroRef.current?.querySelectorAll('.hero-meta');
-      const archFrame = heroRef.current?.querySelector('.hero-arch-wrap');
-      const floatingBadges = heroRef.current?.querySelectorAll('.hero-float-badge');
+      // Masked line reveal for hero typography
+      gsap.fromTo(
+        '.hero-line-inner',
+        { yPercent: 108, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 1.05,
+          stagger: 0.08,
+          ease: 'power4.out',
+          delay: 0.1,
+        }
+      );
 
-      const tl = gsap.timeline({
-        defaults: { ease: 'power3.out' },
-      });
+      // Portrait slit curtain reveal
+      gsap.fromTo(
+        portraitWrapRef.current,
+        { clipPath: 'inset(100% 0% 0% 0%)' },
+        {
+          clipPath: 'inset(0% 0% 0% 0%)',
+          duration: 1.25,
+          ease: 'power4.inOut',
+          delay: 0.2,
+        }
+      );
 
-      if (words && words.length > 0) {
-        tl.fromTo(
-          words,
-          { y: 38, opacity: 0, rotateX: -20 },
-          { y: 0, opacity: 1, rotateX: 0, duration: 0.7, stagger: 0.055 },
-          0.05
-        );
+      gsap.fromTo(
+        portraitImgRef.current,
+        { scale: 1.18 },
+        {
+          scale: 1,
+          duration: 1.45,
+          ease: 'power3.out',
+          delay: 0.2,
+        }
+      );
+
+      // Subtle scroll parallax on the portrait column
+      if (portraitImgRef.current && sectionRef.current) {
+        gsap.to(portraitImgRef.current, {
+          yPercent: 10,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
       }
-
-      if (metaItems && metaItems.length > 0) {
-        tl.fromTo(
-          metaItems,
-          { y: 22, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.58, stagger: 0.08 },
-          0.26
-        );
-      }
-
-      if (archFrame) {
-        tl.fromTo(
-          archFrame,
-          { y: 30, opacity: 0, scale: 0.95 },
-          { y: 0, opacity: 1, scale: 1, duration: 0.78 },
-          0.32
-        );
-      }
-
-      if (floatingBadges && floatingBadges.length > 0) {
-        tl.fromTo(
-          floatingBadges,
-          { y: 18, opacity: 0, scale: 0.92 },
-          { y: 0, opacity: 1, scale: 1, duration: 0.55, stagger: 0.1 },
-          0.5
-        );
-      }
-    }, heroRef);
+    }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  const handleMonolithMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!monolithRef.current || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    const rect = monolithRef.current.getBoundingClientRect();
-    const nx = (e.clientX - rect.left) / Math.max(rect.width, 1) - 0.5;
-    const ny = (e.clientY - rect.top) / Math.max(rect.height, 1) - 0.5;
-    setTilt({ rx: -ny * 12, ry: nx * 14 });
-  };
-
-  const resetMonolithTilt = () => {
-    setTilt({ rx: 0, ry: 0 });
-  };
-
   return (
     <section
+      ref={sectionRef}
       id="top"
-      ref={heroRef}
-      className="relative mx-auto max-w-[1280px] px-4 pb-12 pt-8 sm:px-8 sm:pt-14 lg:pb-20 lg:pt-16"
+      aria-label="Introduction"
+      className="relative border-b border-rule overflow-hidden"
     >
-      <div className="relative z-10 grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
-        {/* Left Column: Telemetry + Kinetic Headline + Positioning + CTAs */}
-        <div className="lg:col-span-7">
-          <div className="hero-meta mb-6 flex flex-wrap items-center gap-2.5">
-            <div className="section-pill">
-              <span className="section-pill-dot" aria-hidden="true" />
-              <span>[01] {PORTFOLIO_DATA.owner.badge}</span>
-            </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E5B84B]/40 bg-[#E5B84B]/10 px-3.5 py-1.5 font-mono text-[11px] font-bold tracking-wider text-[#FDE68A] backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#E5B84B]" />
-              {PORTFOLIO_DATA.hero.positioningLine}
-            </span>
+      {/* Top 4-column Swiss Metadata Bar */}
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 border-b border-rule">
+        <div className="grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-rule text-xs font-mono">
+          <div className="py-3.5 pr-4 flex items-center justify-between">
+            <span className="text-ink-faint uppercase">Role</span>
+            <span className="text-ink font-medium">AI Builder</span>
           </div>
+          <div className="py-3.5 sm:px-4 flex items-center justify-between">
+            <span className="text-ink-faint uppercase">Base</span>
+            <span className="text-ink font-medium">Kadapa, India</span>
+          </div>
+          <div className="py-3.5 sm:px-4 flex items-center justify-between">
+            <span className="text-ink-faint uppercase">Track Record</span>
+            <span className="text-ink font-medium">{owner.positioningLine}</span>
+          </div>
+          <div className="py-3.5 sm:pl-4 flex items-center justify-between">
+            <span className="text-ink-faint uppercase">Daily Practice</span>
+            <span className="text-vermilion font-medium">Since Nov 2022 · 8,000+ hrs (est.)</span>
+          </div>
+        </div>
+      </div>
 
-          <h1 className="hero-h1 mb-6 [perspective:900px]">
-            <span className="hero-word inline-block">I</span>{' '}
-            <span className="hero-word inline-block">build</span>{' '}
-            <span className="hero-word serif-italic text-neon-gold inline-block font-normal">real</span>{' '}
-            <span className="hero-word inline-block">products</span>{' '}
-            <span className="hero-word inline-block">with</span>{' '}
-            <span className="hero-word text-neon-emerald inline-block">AI.</span>
+      {/* Main Monumental Editorial Stage */}
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 pt-8 sm:pt-12 lg:pt-16 pb-12 sm:pb-16 lg:pb-20">
+        {/* Giant Monumental Name with Architectural Portrait Slit */}
+        <div className="relative">
+          <h1 className="sr-only">
+            {owner.fullName} — {hero.headlinePrefix} {hero.headlineItalic} {hero.headlineMiddle}{' '}
+            {hero.headlineAccent} {owner.positioningLine}
           </h1>
 
-          <p className="hero-meta mb-8 max-w-[600px] text-base font-medium leading-relaxed text-slate-300 sm:text-lg md:text-xl">
-            <strong className="font-bold text-white">{PORTFOLIO_DATA.hero.positioningLine}</strong>{' '}
-            {PORTFOLIO_DATA.hero.subline}
-          </p>
-
-          <div className="hero-meta flex flex-wrap items-center gap-3.5 sm:gap-4">
-            <a href={PORTFOLIO_DATA.hero.primaryCta.href} className="btn-primary">
-              <span>{PORTFOLIO_DATA.hero.primaryCta.label}</span>
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </a>
-
-            <a href={PORTFOLIO_DATA.hero.secondaryCta.href} className="btn-secondary">
-              <span>{PORTFOLIO_DATA.hero.secondaryCta.label}</span>
-              <svg
-                width="17"
-                height="17"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M7 17L17 7" />
-                <path d="M7 7h10v10" />
-              </svg>
-            </a>
-          </div>
-
-          {/* Spatial Telemetry Strip */}
-          <div className="hero-meta cyber-glass mt-9 grid max-w-[560px] grid-cols-3 gap-2 rounded-2xl p-3.5">
-            <div className="px-2">
-              <div className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
-                DAILY AI USE
+          <div
+            aria-hidden="true"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end"
+          >
+            {/* Left / Center Monumental Display Typography */}
+            <div className="lg:col-span-8 xl:col-span-9">
+              <div className="line-mask">
+                <span className="hero-line-inner display-monument uppercase text-ink text-[clamp(3.1rem,9.2vw,8.6rem)]">
+                  SYED ABDUL
+                </span>
               </div>
-              <div className="mt-0.5 font-display text-sm font-extrabold text-[#00F5A0] sm:text-base">
-                Since 2022
+              <div className="line-mask mt-1 sm:mt-2 flex flex-wrap items-baseline gap-x-4 sm:gap-x-6">
+                <span className="hero-line-inner display-monument uppercase text-ink text-[clamp(3.1rem,9.2vw,8.6rem)]">
+                  KAREEM
+                </span>
+                <span className="hero-line-inner font-mono text-xs sm:text-sm uppercase tracking-widest px-3 py-1 rounded-full border border-ink/25 text-ink-2">
+                  (2022 → 2026)
+                </span>
+              </div>
+
+              {/* Editorial Serif Positioning Headline */}
+              <div className="line-mask mt-4 sm:mt-6">
+                <p className="hero-line-inner serif-editorial text-ink text-[clamp(2.2rem,5.4vw,5.1rem)]">
+                  {hero.headlinePrefix}{' '}
+                  <em className="italic text-vermilion underline decoration-vermilion/30 decoration-1 underline-offset-8">
+                    {hero.headlineItalic}
+                  </em>{' '}
+                  {hero.headlineMiddle}{' '}
+                  <span className="font-display font-extrabold tracking-tight text-ink">
+                    {hero.headlineAccent}
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="border-x border-white/10 px-3">
-              <div className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
-                HANDS-ON TIME
-              </div>
-              <div className="mt-0.5 font-display text-sm font-extrabold text-white sm:text-base">
-                8,000+ hrs (est.)
-              </div>
-            </div>
-            <div className="px-2">
-              <div className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
-                SHIPPED
-              </div>
-              <div className="mt-0.5 font-display text-sm font-extrabold text-[#FDE68A] sm:text-base">
-                4 Products
+
+            {/* Right: Architectural Portrait Window + Rotating Circular Seal */}
+            <div className="lg:col-span-4 xl:col-span-3 flex justify-start lg:justify-end">
+              <div className="relative w-full max-w-[300px] sm:max-w-[320px]">
+                {/* Rotating Circular Text Badge overlapping corner */}
+                <div
+                  aria-hidden="true"
+                  className=" -top-6 -left-6 z-20 w-24 h-24 rounded-full bg-bone border border-rule flex items-center justify-center shadow-sm hidden sm:flex"
+                >
+                  <svg viewBox="0 0 100 100" className="w-20 h-20 animate-seal">
+                    <defs>
+                      <path
+                        id="sealPath"
+                        d="M 50, 50 m -36, 0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0"
+                      />
+                    </defs>
+                    <text className="fill-ink font-mono text-[8.3px] uppercase tracking-[0.19em]">
+                      <textPath href="#sealPath">{owner.rotatingBadgeText}</textPath>
+                    </text>
+                  </svg>
+                  <span className="absolute w-2.5 h-2.5 rounded-full bg-vermilion" />
+                </div>
+
+                {/* Portrait Frame */}
+                <div
+                  ref={portraitWrapRef}
+                  className="relative aspect-[4/5] w-full overflow-hidden rounded-t-[140px] rounded-b-2xl border border-ink/15 bg-bone-warm"
+                >
+                  <img
+                    ref={portraitImgRef}
+                    src={owner.portraitArch}
+                    alt={owner.portraitAlt}
+                    width={640}
+                    height={800}
+                    fetchPriority="high"
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 p-3.5 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent flex items-center justify-between text-bone">
+                    <span className="font-mono text-[11px] uppercase tracking-wider">
+                      {owner.fullName}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 font-mono text-[10px] px-2.5 py-0.5 rounded-full bg-bone/95 text-ink">
+                      <span className="w-1.5 h-1.5 rounded-full bg-vermilion" />
+                      {owner.availableText}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Column: 3D Interactive Parallax Hologram Portrait Monolith */}
-        <div className="relative mx-auto flex w-full max-w-[410px] items-center justify-center lg:col-span-5 lg:max-w-none">
-          <div
-            ref={monolithRef}
-            onPointerMove={handleMonolithMove}
-            onPointerLeave={resetMonolithTilt}
-            style={{
-              transform: `perspective(1200px) rotateX(${tilt.rx.toFixed(2)}deg) rotateY(${tilt.ry.toFixed(2)}deg)`,
-              transformStyle: 'preserve-3d',
-            }}
-            className="relative flex w-full max-w-[360px] items-center justify-center transition-transform duration-200 ease-out sm:max-w-[385px]"
-          >
-            {/* Glowing Orbital Halo */}
-            <div
-              aria-hidden="true"
-              className="pulse-aura pointer-events-none absolute -inset-4 rounded-[9999px_9999px_40px_40px] border border-[#00F5A0]/25 bg-gradient-to-b from-[#00F5A0]/15 via-[#00D9F5]/5 to-[#E5B84B]/12 blur-md"
-            />
-
-            {/* Arch Portrait Monolith */}
-            <div className="hero-arch-wrap arch-portrait relative w-full">
-              {/* Animated Holographic Scanline */}
-              <div
-                aria-hidden="true"
-                className="holo-scanline pointer-events-none absolute inset-x-0 top-0 z-10 h-16 bg-gradient-to-b from-transparent via-[#00F5A0]/12 to-transparent"
-              />
-
-              {/* Top Monolith Coordinate Bar */}
-              <div className="pointer-events-none absolute inset-x-0 top-4 z-10 flex justify-center">
-                <span className="rounded-full border border-white/15 bg-[#030508]/75 px-3 py-0.5 font-mono text-[9.5px] font-bold uppercase tracking-[0.2em] text-[#00F5A0] backdrop-blur-md">
-                  KADAPA · IN // AI BUILDER
-                </span>
-              </div>
-
-              <img
-                src={PORTFOLIO_DATA.owner.portraitArch}
-                alt={PORTFOLIO_DATA.owner.portraitAlt}
-                width={780}
-                height={960}
-                fetchPriority="high"
-                decoding="async"
-                className="block h-auto w-full object-cover object-top"
-              />
-
-              {/* Bottom Obsidian Vignette */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#030508] via-[#030508]/45 to-transparent"
-              />
-            </div>
-
-            {/* 3D Floating "Available for work" Pill (translateZ depth layer) */}
-            <div
-              style={{ transform: 'translateZ(36px)' }}
-              className="hero-float-badge absolute -left-3 bottom-7 z-20 flex items-center gap-2.5 rounded-full border border-[#00F5A0]/45 bg-[#050914]/90 px-4 py-2.5 shadow-[0_18px_40px_rgba(0,0,0,0.85)] backdrop-blur-xl sm:-left-6 sm:bottom-9"
-            >
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00F5A0] opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#00F5A0] shadow-[0_0_10px_#00F5A0]" />
-              </span>
-              <span className="font-display text-xs font-extrabold tracking-tight text-white sm:text-sm">
-                {PORTFOLIO_DATA.owner.availableText}
-              </span>
-            </div>
-
-            {/* 3D Floating Rotating Circular Text Badge */}
-            <div
-              style={{ transform: 'translateZ(44px)' }}
-              className="hero-float-badge absolute -right-2 -top-5 z-20 flex h-28 w-28 items-center justify-center rounded-full border border-white/15 bg-[#050914]/90 shadow-[0_20px_50px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:-right-5 sm:-top-6 sm:h-32 sm:w-32"
-              aria-label="Apps, Websites, Videos, Marketing"
-            >
-              <svg viewBox="0 0 120 120" className="spin-badge h-full w-full p-1.5" aria-hidden="true">
-                <defs>
-                  <path
-                    id="hero-badge-circle"
-                    d="M 60, 60 m -44, 0 a 44,44 0 1,1 88,0 a 44,44 0 1,1 -88,0"
-                  />
-                </defs>
-                <text
-                  fill="#F8FAFC"
-                  fontSize="9.3"
-                  fontWeight="800"
-                  fontFamily="Plus Jakarta Sans, sans-serif"
-                  letterSpacing="2.25px"
-                >
-                  <textPath href="#hero-badge-circle" startOffset="0%">
-                    APPS · WEBSITES · VIDEOS · MARKETING ·
-                  </textPath>
-                </text>
-              </svg>
-              <div className="absolute flex h-8 w-8 items-center justify-center rounded-full border border-[#00F5A0]/40 bg-[#00F5A0]/15">
-                <span className="h-3 w-3 rounded-full bg-[#00F5A0] shadow-[0_0_14px_#00F5A0]" />
-              </div>
-            </div>
+        {/* Bottom Editorial Sub-ledger: Bio Copy + Primary Actions + Quick Shipped Index */}
+        <div className="mt-10 sm:mt-14 pt-8 border-t border-rule grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-6 space-y-4">
+            <p className="font-mono text-xs uppercase tracking-widest text-vermilion">
+              {owner.badge} — {owner.positioningLine}
+            </p>
+            <p className="text-base sm:text-lg text-ink-2 leading-relaxed max-w-2xl">
+              {hero.subline}
+            </p>
           </div>
+
+          <div className="lg:col-span-6 flex flex-col sm:flex-row lg:justify-end items-stretch sm:items-center gap-3.5">
+            <a
+              href={hero.primaryCta.href}
+              id="hero-cta-work"
+              className="inline-flex items-center justify-center gap-3 px-7 py-4 rounded-full bg-ink text-bone font-mono text-xs uppercase tracking-wider hover:bg-vermilion transition-colors duration-300"
+            >
+              <span>{hero.primaryCta.label}</span>
+              <span aria-hidden="true">↓</span>
+            </a>
+            <a
+              href={hero.secondaryCta.href}
+              id="hero-cta-contact"
+              className="inline-flex items-center justify-center gap-3 px-7 py-4 rounded-full border border-ink text-ink font-mono text-xs uppercase tracking-wider hover:bg-ink hover:text-bone transition-colors duration-300"
+            >
+              <span>{hero.secondaryCta.label}</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Subtle Editorial Ticker Strip */}
+      <div className="border-t border-rule bg-bone-warm/60 py-3 overflow-hidden">
+        <div className="animate-editorial-marquee">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center shrink-0">
+              <span className="font-mono text-xs uppercase tracking-[0.22em] text-ink-muted px-6">
+                {PORTFOLIO_DATA.marqueeText}
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-vermilion" />
+            </div>
+          ))}
         </div>
       </div>
     </section>

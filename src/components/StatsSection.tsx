@@ -1,112 +1,60 @@
 import React from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolio';
-import { useScrollReveal } from '../hooks/useScrollReveal';
-import { SpotlightCard } from './SpotlightCard';
 
 export const StatsSection: React.FC = () => {
-  const containerRef = useScrollReveal<HTMLElement>(90);
+  const { stats, owner } = PORTFOLIO_DATA;
 
   return (
     <section
       id="stats"
-      ref={containerRef}
-      aria-label="Key AI Building Metrics"
-      className="relative z-10 mx-auto max-w-[1280px] px-4 py-14 sm:px-8 sm:py-20"
+      aria-label="Verified AI Experience Metrics"
+      className="border-b border-rule bg-bone"
     >
-      {/* Top positioning bar */}
-      <div className="reveal-up mb-8 flex flex-wrap items-center justify-between gap-4">
-        <div className="section-pill">
-          <span className="section-pill-dot" aria-hidden="true" />
-          <span>[02] // TELEMETRY · PROOF OF WORK</span>
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 py-14 sm:py-20">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 border-b border-rule">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-vermilion">
+              01 / Proof of Practice
+            </p>
+            <h2 className="mt-2 font-display font-bold text-2xl sm:text-3xl text-ink tracking-tight">
+              {owner.positioningLine}
+            </h2>
+          </div>
+          <p className="font-mono text-xs text-ink-muted max-w-md">
+            Every figure below reflects direct, daily building across frontier and local AI models since November 2022.
+          </p>
         </div>
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#00F5A0]/30 bg-[#00F5A0]/10 px-4 py-1.5 font-mono text-xs font-semibold tracking-wider text-[#00F5A0]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#00F5A0] shadow-[0_0_8px_#00F5A0]" />
-          <span>{PORTFOLIO_DATA.hero.positioningLine}</span>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {PORTFOLIO_DATA.stats.map((stat, idx) => {
-          const isGold = stat.theme === 'gold';
-          return (
-            <SpotlightCard
-              key={idx}
-              glowColor={isGold ? 'rgba(229, 184, 75, 0.18)' : 'rgba(0, 245, 160, 0.18)'}
-              className={`reveal-up rounded-[28px] p-6 sm:p-7 ${
-                isGold ? 'cyber-glass-gold' : idx === 0 ? 'cyber-glass-emerald' : 'cyber-glass'
-              }`}
+        {/* 4-Column Architectural Stat Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-rule border-b border-rule">
+          {stats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className="py-8 sm:px-6 first:sm:pl-0 last:sm:pr-0 flex flex-col justify-between group"
             >
-              {/* Top glowing hairline */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-6 top-0 h-[1.5px]"
-                style={{
-                  background: isGold
-                    ? 'linear-gradient(90deg, transparent, #E5B84B, transparent)'
-                    : 'linear-gradient(90deg, transparent, #00F5A0, transparent)',
-                }}
-              />
-
-              <div className="flex h-full min-h-[210px] flex-col justify-between">
-                {/* Top indicator */}
-                <div className="flex items-center justify-between">
-                  <span
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest ${
-                      isGold
-                        ? 'border-[#E5B84B]/35 bg-[#E5B84B]/10 text-[#E5B84B]'
-                        : 'border-[#00F5A0]/35 bg-[#00F5A0]/10 text-[#00F5A0]'
-                    }`}
-                  >
-                    <span>METRIC.0{idx + 1}</span>
+              <div className="flex items-center justify-between text-xs font-mono text-ink-faint">
+                <span>FIG. 0{index + 1}</span>
+                {stat.suffix && (
+                  <span className="px-2 py-0.5 rounded bg-bone-warm text-ink-2 font-medium">
+                    {stat.suffix}
                   </span>
-
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={isGold ? 'text-[#E5B84B]/70' : 'text-[#00F5A0]/70'}
-                    aria-hidden="true"
-                  >
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                  </svg>
-                </div>
-
-                {/* Big number */}
-                <div className="my-5">
-                  <div className="flex items-baseline gap-2.5">
-                    <span
-                      className={`font-display text-[clamp(2.8rem,4.5vw,4rem)] font-extrabold leading-none tracking-[-0.04em] ${
-                        isGold ? 'text-neon-gold' : idx === 0 ? 'text-neon-emerald' : 'text-white'
-                      }`}
-                    >
-                      {stat.value}
-                    </span>
-                    {stat.suffix && (
-                      <span className="rounded-full border border-[#00F5A0]/35 bg-[#00F5A0]/12 px-2.5 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-[#00F5A0]">
-                        {stat.suffix}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Label & Sublabel */}
-                <div className="border-t border-white/[0.07] pt-4">
-                  <h2 className="font-display text-base font-extrabold leading-snug text-white sm:text-lg">
-                    {stat.label}
-                  </h2>
-                  <p className="mt-1 text-xs font-medium leading-relaxed text-slate-400 sm:text-sm">
-                    {stat.sublabel}
-                  </p>
-                </div>
+                )}
               </div>
-            </SpotlightCard>
-          );
-        })}
+
+              <div className="my-6 flex items-baseline gap-2">
+                <span className="display-monument text-ink text-5xl sm:text-6xl xl:text-7xl group-hover:text-vermilion transition-colors duration-300">
+                  {stat.value}
+                </span>
+              </div>
+
+              <div className="space-y-1.5 border-t border-rule/70 pt-4">
+                <h3 className="font-semibold text-base text-ink">{stat.label}</h3>
+                <p className="text-xs text-ink-muted leading-relaxed">{stat.sublabel}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
